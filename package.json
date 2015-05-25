@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "babel": "^5.4.7",
+    "ellipsize": "0.0.2",
     "express": "^4.12.4",
     "react": "^0.13.3",
-    "babel": "^5.4.7"
+    "superagent": "^1.2.0"
   },
   "devDependencies": {
     "babelify": "^6.1.1",
@@ -17,8 +19,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "express": "nodemon -- index.js",
-    "watchify": "watchify client.js -d -t babelify -o build/bundle.js",
+    "express": "nodemon -- server/index.js",
+    "watchify": "watchify client.js -v -d -t babelify -o server/build/bundle.js",
     "start": "parallelshell 'npm run watchify' 'npm run express'"
   },
   "author": "",
