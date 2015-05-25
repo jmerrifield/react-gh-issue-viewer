@@ -3,7 +3,7 @@ require('babel/polyfill')
 import React from 'react'
 import Router from 'react-router'
 
-let {Route, RouteHandler, DefaultRoute} = Router
+let {Route, RouteHandler, DefaultRoute, HistoryLocation} = Router
 
 import IssueListController from './components/IssueListController'
 
@@ -27,6 +27,6 @@ let routes = (
   </Route>
 )
 
-Router.run(routes, Handler => {
+Router.run(routes, HistoryLocation, Handler => {
   React.render(<Handler />, document.getElementById('app'))
 })
