@@ -1,28 +1,38 @@
 import React from 'react'
 import request from 'superagent'
 import IssueList from './IssueList'
+import Router from 'react-router'
 
-export default class IssueListController extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {loading: true}
-  }
+export default React.createClass({
+  mixins: [ Router.State ],
 
-  componentDidMount() {
-    request.get('https://api.github.com/repos/rails/rails/issues')
+  loadIssues: function (page = 1) {
+    request.get(`https://api.github.com/repos/rails/rails/issues?page=${page}`)
     .end(function (err, res) {
       this.setState({
         loading: false,
         issues: res.body
       })
     }.bind(this))
-  }
+  },
 
-  render() {
+  getInitialState: function() {
+    return {loading: true}
+  },
+
+  componentDidMount: function () {
+    this.loadIssues()
+  },
+
+  componentWillReceiveProps: function () {
+    this.loadIssues(this.getQuery().page)
+  },
+
+  render: function () {
     if (this.state.loading) {
       return <div>Loading issues</div>
     }
 
     return <IssueList issues={this.state.issues} />
   }
-}
+})
