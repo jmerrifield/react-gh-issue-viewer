@@ -1,20 +1,20 @@
 require('babel/polyfill')
 
 import React from 'react'
-import Router from 'react-router'
-
-let {Route, RouteHandler, DefaultRoute, HistoryLocation} = Router
+import Router, {Route, RouteHandler, DefaultRoute, HistoryLocation} from 'react-router'
+import Promise from 'bluebird'
 
 import IssueListController from './components/IssueListController'
 
 class App extends React.Component {
   render() {
-    console.log('APP Render', this.props)
     return (
       <div>
         <h1>Rails Issues</h1>
 
-        <RouteHandler/>
+        {this.props.firstLoad && (<div>LOADING</div>)}
+
+        <RouteHandler {...this.props}/>
       </div>
     )
   }
@@ -23,10 +23,32 @@ class App extends React.Component {
 let routes = (
   <Route name='app' path='/' handler={App}>
     <Route name='issues' path='/issues' handler={IssueListController} />
-    <DefaultRoute handler={IssueListController} />
+    <DefaultRoute name='issues-home' handler={IssueListController} />
   </Route>
 )
 
-Router.run(routes, HistoryLocation, Handler => {
-  React.render(<Handler />, document.getElementById('app'))
+let firstLoad = true
+
+Router.run(routes, HistoryLocation, function (Handler, state) {
+  console.log('Routing', state)
+
+  // TODO: Trigger loading indicator somehow
+
+  var promises = state.routes
+  .filter(r => r.handler.fetchData)
+  .reduce((promises, route) => {
+    // reduce to a hash of `key:promise`
+    promises[route.name] = route.handler.fetchData(state.params, state.query)
+    return promises
+  }, {})
+
+  if (firstLoad) {
+    React.render(<Handler data={{}} firstLoad={true}/>, document.getElementById('app'))
+  }
+
+  Promise.props(promises).then(function (data) {
+    console.log('DATA FETCHED', Handler, data)
+    firstLoad = false
+    React.render(<Handler data={data}/>, document.getElementById('app'))
+  })
 })

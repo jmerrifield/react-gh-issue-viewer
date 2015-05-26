@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.5.4",
     "babel": "^5.4.7",
+    "bluebird": "^2.9.26",
     "ellipsize": "0.0.2",
     "express": "^4.12.4",
+    "parse-link-header": "^0.2.0",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
     "superagent": "^1.2.0"

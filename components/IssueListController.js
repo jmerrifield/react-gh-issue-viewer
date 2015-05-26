@@ -1,38 +1,29 @@
 import React from 'react'
-import request from 'superagent'
+import {get} from 'axios'
 import IssueList from './IssueList'
-import Router from 'react-router'
+import parseLinkHeader from 'parse-link-header'
 
 export default React.createClass({
-  mixins: [ Router.State ],
+  statics: {
+    fetchData: function (params, query) {
+      return get(`https://api.github.com/repos/rails/rails/issues?page=${query.page || 1}`)
+      .then(res => {
+        let links = parseLinkHeader(res.headers.link)
 
-  loadIssues: function (page = 1) {
-    request.get(`https://api.github.com/repos/rails/rails/issues?page=${page}`)
-    .end(function (err, res) {
-      this.setState({
-        loading: false,
-        issues: res.body
+        return {
+          prevPage: links.prev && links.prev.page,
+          nextPage: links.next && links.next.page,
+          issues: res.data
+        }
       })
-    }.bind(this))
-  },
-
-  getInitialState: function() {
-    return {loading: true}
-  },
-
-  componentDidMount: function () {
-    this.loadIssues()
-  },
-
-  componentWillReceiveProps: function () {
-    this.loadIssues(this.getQuery().page)
+    }
   },
 
   render: function () {
-    if (this.state.loading) {
-      return <div>Loading issues</div>
-    }
+    let issues = this.props.data.issues || this.props.data['issues-home']
 
-    return <IssueList issues={this.state.issues} />
+    if (!issues) return <div />
+
+    return <IssueList issues={issues} />
   }
 })
