@@ -5,6 +5,7 @@ import Router, {Route, RouteHandler, DefaultRoute, HistoryLocation} from 'react-
 import Promise from 'bluebird'
 
 import IssueListController from './components/IssueListController'
+import IssueController from './components/IssueController'
 
 class App extends React.Component {
   render() {
@@ -23,6 +24,7 @@ class App extends React.Component {
 let routes = (
   <Route name='app' path='/' handler={App}>
     <Route name='issues' path='/issues' handler={IssueListController} />
+    <Route name='issue' path='/issue/:id' handler={IssueController} />
     <DefaultRoute name='issues-home' handler={IssueListController} />
   </Route>
 )
