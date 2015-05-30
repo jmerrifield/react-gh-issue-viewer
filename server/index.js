@@ -12,24 +12,12 @@ function delay(req, res, next) {
 
 app.use(require('express').static(__dirname))
 
-import Routes from '../Routes'
-import Router from 'react-router'
-import Promise from 'bluebird'
+import App from '../App'
 
 app.use(function (req, res) {
-  Router.run(Routes, req.url, function (Handler, state) {
-    var promises = state.routes
-    .filter(r => r.handler.fetchData)
-    .reduce((promises, route) => {
-      // reduce to a hash of `key:promise`
-      promises[route.name] = route.handler.fetchData(state.params, state.query)
-      return promises
-    }, {})
-
-    Promise.props(promises).then(function (data) {
-      let content = React.renderToString(<Handler data={data}/>)
-      res.render('index.ejs', {content, data})
-    })
+  App(req.url, {}, function (Handler, data, state) {
+    let content = React.renderToString(<Handler data={data}/>)
+    res.render('index.ejs', {content, data: {[state.path]: data}})
   })
 })
 
