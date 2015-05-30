@@ -7,8 +7,6 @@ export default class App extends React.Component {
       <div>
         <h1>Rails Issues</h1>
 
-        {this.props.firstLoad && (<div>LOADING</div>)}
-
         <RouteHandler {...this.props}/>
       </div>
     )

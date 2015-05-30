@@ -5,11 +5,7 @@ import Router, {HistoryLocation} from 'react-router'
 import Promise from 'bluebird'
 import Routes from './Routes'
 
-let firstLoad = true
-
 Router.run(Routes, HistoryLocation, function (Handler, state) {
-  console.log('Routing', state)
-
   // TODO: Trigger loading indicator somehow
 
   if (window.bootstrapData) {
@@ -18,6 +14,7 @@ Router.run(Routes, HistoryLocation, function (Handler, state) {
     React.render(<Handler data={data}/>, document.getElementById('app'))
     return
   }
+
   var promises = state.routes
   .filter(r => r.handler.fetchData)
   .reduce((promises, route) => {
@@ -26,13 +23,7 @@ Router.run(Routes, HistoryLocation, function (Handler, state) {
     return promises
   }, {})
 
-  if (firstLoad) {
-    React.render(<Handler data={{}} firstLoad={true}/>, document.getElementById('app'))
-  }
-
   Promise.props(promises).then(function (data) {
-    console.log('DATA FETCHED', Handler, data)
-    firstLoad = false
     React.render(<Handler data={data}/>, document.getElementById('app'))
   })
 })
