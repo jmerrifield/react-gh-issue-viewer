@@ -12,6 +12,12 @@ Router.run(Routes, HistoryLocation, function (Handler, state) {
 
   // TODO: Trigger loading indicator somehow
 
+  if (window.bootstrapData) {
+    let data = window.bootstrapData
+    delete window.bootstrapData
+    React.render(<Handler data={data}/>, document.getElementById('app'))
+    return
+  }
   var promises = state.routes
   .filter(r => r.handler.fetchData)
   .reduce((promises, route) => {

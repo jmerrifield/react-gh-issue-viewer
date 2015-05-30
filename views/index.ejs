@@ -5,6 +5,10 @@
   </head>
 
   <body>
-    <div id='app'><%= content %></div>
+    <div id='app'><%- content %></div>
+    <script>
+      // TODO: Escape properly
+      window.bootstrapData = <%- JSON.stringify(data) %>
+    </script>
   </body>
 </html>

@@ -12,12 +12,25 @@ function delay(req, res, next) {
 
 app.use(require('express').static(__dirname))
 
-app.get('/test', function (req, res) {
-  res.render('index.ejs', {content: '<div>HELLOOOOOO</div>'})
-})
+import Routes from '../Routes'
+import Router from 'react-router'
+import Promise from 'bluebird'
 
-app.get('*', function (req, res) {
-  res.sendFile(__dirname + '/index.html')
+app.use(function (req, res) {
+  Router.run(Routes, req.url, function (Handler, state) {
+    var promises = state.routes
+    .filter(r => r.handler.fetchData)
+    .reduce((promises, route) => {
+      // reduce to a hash of `key:promise`
+      promises[route.name] = route.handler.fetchData(state.params, state.query)
+      return promises
+    }, {})
+
+    Promise.props(promises).then(function (data) {
+      let content = React.renderToString(<Handler data={data}/>)
+      res.render('index.ejs', {content, data})
+    })
+  })
 })
 
 app.listen(8080)
