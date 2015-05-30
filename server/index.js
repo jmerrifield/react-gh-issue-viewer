@@ -1,4 +1,7 @@
-var app = require('express')()
+import express from 'express'
+import React from 'react'
+
+const app = express()
 
 function delay(req, res, next) {
   setTimeout(next, 2000)
@@ -8,6 +11,10 @@ function delay(req, res, next) {
 // app.use([delay, require('express').static(__dirname)])
 
 app.use(require('express').static(__dirname))
+
+app.get('/test', function (req, res) {
+  res.render('index.ejs', {content: '<div>HELLOOOOOO</div>'})
+})
 
 app.get('*', function (req, res) {
   res.sendFile(__dirname + '/index.html')

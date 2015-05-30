@@ -7,6 +7,7 @@
     "axios": "^0.5.4",
     "babel": "^5.4.7",
     "bluebird": "^2.9.26",
+    "ejs": "^2.3.1",
     "ellipsize": "0.0.2",
     "express": "^4.12.4",
     "parse-link-header": "^0.2.0",
@@ -26,7 +27,8 @@
   },
   "scripts": {
     "test": "jest",
-    "express": "nodemon --ignore server/build -- server/index.js",
+    "babel-node": "babel-node --stage 0 --ignore='node_modules'",
+    "express": "nodemon --ignore server/build --exec npm run babel-node -- server/index.js",
     "webpack": "webpack -d --watch",
     "start": "parallelshell 'npm run webpack' 'npm run express'"
   },
