@@ -1,37 +1,13 @@
 require('babel/polyfill')
 
 import React from 'react'
-import Router, {Route, RouteHandler, DefaultRoute, HistoryLocation} from 'react-router'
+import Router, {HistoryLocation} from 'react-router'
 import Promise from 'bluebird'
-
-import IssueListController from './components/IssueListController'
-import IssueController from './components/IssueController'
-
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Rails Issues</h1>
-
-        {this.props.firstLoad && (<div>LOADING</div>)}
-
-        <RouteHandler {...this.props}/>
-      </div>
-    )
-  }
-}
-
-let routes = (
-  <Route name='app' path='/' handler={App}>
-    <Route name='issues' path='/issues' handler={IssueListController} />
-    <Route name='issue' path='/issue/:id' handler={IssueController} />
-    <DefaultRoute name='issues-home' handler={IssueListController} />
-  </Route>
-)
+import Routes from './Routes'
 
 let firstLoad = true
 
-Router.run(routes, HistoryLocation, function (Handler, state) {
+Router.run(Routes, HistoryLocation, function (Handler, state) {
   console.log('Routing', state)
 
   // TODO: Trigger loading indicator somehow
