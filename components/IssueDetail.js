@@ -1,7 +1,7 @@
 import React from 'react'
 import IssueLabels from './IssueLabels'
 import User from './User'
-import IssueCommentsController from './IssueCommentsController'
+import IssueCommentsWrapper from './IssueCommentsWrapper'
 
 export default class Issue extends React.Component {
   render() {
@@ -15,7 +15,7 @@ export default class Issue extends React.Component {
         <div><IssueLabels labels={issue.labels} /></div>
         <div><User user={issue.user} /></div>
         <div>{issue.body}</div>
-        <IssueCommentsController issue={issue} />
+        <IssueCommentsWrapper issue={issue} />
       </div>
     )
   }

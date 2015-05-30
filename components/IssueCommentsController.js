@@ -6,8 +6,6 @@ export default class IssueCommentsController extends React.Component {
   state = {loading: true}
 
   componentDidMount() {
-    if (this.props.issue.comments === 0) return
-
     get(this.props.issue.comments_url)
     .then(res => {
       this.setState({
@@ -19,10 +17,6 @@ export default class IssueCommentsController extends React.Component {
 
   render() {
     const {comments} = this.props.issue
-
-    if (comments === 0) {
-      return <div>NO COMMENTS</div>
-    }
 
     if (this.state.loading) {
       return <div>LOADING</div>

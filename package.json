@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "jest",
-    "express": "nodemon -- server/index.js",
+    "express": "nodemon --ignore server/build -- server/index.js",
     "webpack": "webpack -d --watch",
     "start": "parallelshell 'npm run webpack' 'npm run express'"
   },
