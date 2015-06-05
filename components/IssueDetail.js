@@ -5,16 +5,16 @@ import IssueCommentsWrapper from './IssueCommentsWrapper'
 
 export default class Issue extends React.Component {
   render() {
-    const {issue} = this.props
+    const {issue: {number, title, state, labels, user, body}, issue} = this.props
 
     return (
       <div>
-        <div>{issue.number}</div>
-        <div>{issue.title}</div>
-        <div>{issue.state}</div>
-        <div><IssueLabels labels={issue.labels} /></div>
-        <div><User user={issue.user} /></div>
-        <div>{issue.body}</div>
+        <div>{number}</div>
+        <div>{title}</div>
+        <div>{state}</div>
+        <div><IssueLabels labels={labels} /></div>
+        <div><User user={user} /></div>
+        <div>{body}</div>
         <IssueCommentsWrapper issue={issue} />
       </div>
     )

@@ -7,6 +7,12 @@ export default class IssueLabels extends React.Component {
   }
 
   render() {
-    return <div>{this.props.labels.map(x => <IssueLabel key={x.name} label={x} />)}</div>
+    return (
+      <div>
+        {this.props.labels.map(x => (
+          <IssueLabel key={x.name} label={x} />
+        ))}
+      </div>
+    )
   }
 }

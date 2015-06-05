@@ -6,9 +6,11 @@ import parseLinkHeader from 'parse-link-header'
 export default React.createClass({
   statics: {
     fetchData: function (params, query) {
-      return get(`https://api.github.com/repos/rails/rails/issues?page=${query.page || 1}`)
+      const {page} = query
+
+      return get(`https://api.github.com/repos/rails/rails/issues?page=${page || 1}`)
       .then(res => {
-        let links = parseLinkHeader(res.headers.link)
+        const links = parseLinkHeader(res.headers.link)
 
         return {
           prevPage: links.prev && links.prev.page,
@@ -20,9 +22,12 @@ export default React.createClass({
   },
 
   render: function () {
-    let issues = this.props.data.issues || this.props.data['issues-home']
+    // This Controller view is used by 2 separate routes (the 'issues' route
+    // and the default route named 'issues-home'). It's a bit of an ugly special
+    // case but it seems to work. Pick whichever key the issues are supplied
+    // under.
 
-    if (!issues) return <div />
+    const issues = this.props.data['issues'] || this.props.data['issues-home']
 
     return <IssueList issues={issues} />
   }

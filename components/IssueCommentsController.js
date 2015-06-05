@@ -16,12 +16,12 @@ export default class IssueCommentsController extends React.Component {
   }
 
   render() {
-    const {comments} = this.props.issue
+    const {comments, loading} = this.state
 
-    if (this.state.loading) {
+    if (loading) {
       return <div>LOADING</div>
     }
 
-    return <IssueComments comments={this.state.comments} />
+    return <IssueComments comments={comments} />
   }
 }

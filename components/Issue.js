@@ -6,15 +6,15 @@ import {Link} from 'react-router'
 
 export default class Issue extends React.Component {
   render() {
-    const {issue} = this.props
+    const {number, title, labels, user, body} = this.props.issue
 
     return (
       <div>
-        <Link to='issue' params={{id: issue.number}}>{issue.number}</Link>
-        <span>{issue.title}</span>
-        <span><IssueLabels labels={issue.labels} /></span>
-        <span><User user={issue.user} /></span>
-        <TruncatedText text={issue.body} length={140} />
+        <Link to='issue' params={{id: number}}>{number}</Link>
+        <span>{title}</span>
+        <span><IssueLabels labels={labels} /></span>
+        <span><User user={user} /></span>
+        <TruncatedText text={body} length={140} />
       </div>
     )
   }

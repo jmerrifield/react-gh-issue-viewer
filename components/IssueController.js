@@ -13,9 +13,6 @@ export default React.createClass({
   render: function () {
     const {issue} = this.props.data
 
-    // Initial load state
-    if (!issue) return <div />
-
     return <IssueDetail issue={issue} />
   }
 })

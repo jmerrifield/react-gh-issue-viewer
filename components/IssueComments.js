@@ -6,7 +6,11 @@ export default class IssueComments extends React.Component {
   render() {
     return (
       <ul>
-        {this.props.comments.map(x => <li key={x.id}><IssueCommentDetail comment={x} /></li>)}
+        {this.props.comments.map(x => (
+          <li key={x.id}>
+            <IssueCommentDetail comment={x} />
+          </li>
+        ))}
       </ul>
     )
   }
